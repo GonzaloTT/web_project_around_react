@@ -3,7 +3,7 @@ import footer from "../../../images/Footer.svg";
 function Footer() {
     return (
         <>
-        <footer class="footer">
+        <footer className="footer">
         <img src={footer} alt="Footer" className="footer__image" />
         </footer>
         </>

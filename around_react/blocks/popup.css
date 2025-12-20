@@ -1,19 +1,21 @@
 .popup {
   position: fixed;
   background-color: rgba(0, 0, 0, 0.5);
-  width: 880px;
-  height: 100%;
+  width: 100vh;
+  height: 100vh;
+  inset: 0;
+  justify-content: center;
   align-items: center;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
   color: #000;
-  display: none;
+  display: flex;
 }
 
 .popup_opened {
-  display: block;
+  display: flex;
 }
 
 .popup__container {
