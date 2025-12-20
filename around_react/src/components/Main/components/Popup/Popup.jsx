@@ -12,7 +12,7 @@ function Popup(props) {
                 🞩
             </button>
         <div className="popup__content">
-            <h3 className="popup__title">{title}</h3>
+            {title && <h3 className="popup__title">{title}</h3>}
             {children}
         </div>
         </div>

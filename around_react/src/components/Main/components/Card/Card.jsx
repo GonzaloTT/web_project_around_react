@@ -1,5 +1,12 @@
-function Card(props) {
-    const { name, link, isLiked } = props.card;
+import ImagePopup from "../../../ImagePopup/ImagePopup";
+
+function Card({card, onCardClick}) {
+    const { name, link, isLiked } = card;
+
+    const imageComponent = {
+    title: null,
+    children: <ImagePopup card={card} />,
+  };
 
     return(
         <li className="card">
@@ -12,6 +19,7 @@ function Card(props) {
         className="card__image"
         src={link}
         alt={name}
+        onClick={() => onCardClick(imageComponent)}
         />
         <div className="card__info">
         <p className="card__text">{name}</p>
