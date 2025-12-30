@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
-import person from "../../../images/Person.png";
 import editButton from "../../../images/Edit_Button.svg";
 import addButton from "../../../images/Add_Button.svg";
 
@@ -10,8 +9,11 @@ import NewCard from "../NewCard/form/NewCard";
 import EditProfile from "../EditProfile/EditProfile";
 import EditAvatar from "../Avatar/EditAvatar"
 import api from "../../utils/api";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 function Main() {
+  const currentUser = useContext(CurrentUserContext);
+
   const [popup, setPopup] = useState(null);
   const [cards, setCards] = useState([]);
 
@@ -43,8 +45,8 @@ function Main() {
               <section className="content__profile">
                   <div className="content__avatar_container">
                     <img
-                      src={person}
-                      alt="Person"
+                      src={currentUser.avatar}
+                      alt={currentUser.name}
                       className="content__image content__avatar"
                     />
                     <button
@@ -53,8 +55,8 @@ function Main() {
                     ></button>
                   </div>
                   <div className="content__info">
-                    <h1 className="content__name">Jacques Cousteau</h1>
-                    <h4 className="content__job">Explorador</h4>
+                    <h1 className="content__name">{currentUser.name}</h1>
+                    <h4 className="content__job">{currentUser.about}</h4>
                   </div>
                   <button 
                   className="content__button content__button_edit"

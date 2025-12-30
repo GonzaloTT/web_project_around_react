@@ -1,7 +1,19 @@
+import { useContext } from "react";
 import ImagePopup from "../../../ImagePopup/ImagePopup";
+import CurrentUserContext from "../../../../contexts/CurrentUserContext";
+
 
 function Card({card, onCardClick}) {
-    const { name, link, isLiked } = card;
+    const currentUser = useContext(CurrentUserContext);
+    const { name, link, likes = [] } = card;
+
+    const isLiked = likes.some(
+    (user) => user._id === currentUser?._id
+  );
+
+  const cardLikeButtonClassName = `card__button card__button_like ${
+  isLiked ? "card__button_like_active" : ""
+  }`;
 
     const imageComponent = {
     title: null,
@@ -26,13 +38,11 @@ function Card({card, onCardClick}) {
 
         <div className="card__like_container">
           <button
-            className={`card__button card__button_like ${
-              isLiked ? "card__button_like_active" : ""
-            }`}
+            className={cardLikeButtonClassName}
             aria-label="Like card"
             type="button"
           />
-          <span className="card__like_count">0</span>
+          <span className="card__like_count">{likes.length}</span>
         </div>
         </div>
         </li>
