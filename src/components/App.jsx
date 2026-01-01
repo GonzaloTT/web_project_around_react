@@ -7,22 +7,41 @@ import CurrentUserContext from "../contexts/CurrentUserContext";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
+  const [popup, setPopup] = useState(null);
 
   useEffect(() => {
-  api.getUserInfo()
-    .then((userData) => {
-      setCurrentUser(userData);
-    })
-    .catch(console.error);
+    api.getUserInfo()
+      .then(setCurrentUser)
+      .catch(console.error);
   }, []);
 
+  function handleOpenPopup(popupData) {
+    setPopup(popupData);
+  }
+
+  function handleClosePopup() {
+    setPopup(null);
+  }
+
+  function handleUpdateUser(data) {
+  api.updateUserInfo(data)
+    .then((newUserData) => {
+      setCurrentUser(newUserData);
+      handleClosePopup();
+    })
+    .catch(console.error);
+  }
 
   return (
     <>
-    <CurrentUserContext.Provider value={currentUser}>
+    <CurrentUserContext.Provider value={{currentUser, handleUpdateUser}}>
     <div className="page">
       <Header />
-      <Main />
+      <Main 
+        popup={popup}
+        onOpenPopup={handleOpenPopup}
+        onClosePopup={handleClosePopup}
+      />
       <Footer />
     </div>
     </CurrentUserContext.Provider>

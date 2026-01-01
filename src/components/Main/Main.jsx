@@ -11,10 +11,9 @@ import EditAvatar from "../Avatar/EditAvatar"
 import api from "../../utils/api";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-function Main() {
-  const currentUser = useContext(CurrentUserContext);
+function Main({popup, onOpenPopup, onClosePopup}) {
+  const { currentUser } = useContext(CurrentUserContext);
 
-  const [popup, setPopup] = useState(null);
   const [cards, setCards] = useState([]);
 
   const newCardPopup = { title: "Nuevo lugar", children: <NewCard /> };
@@ -51,14 +50,6 @@ function Main() {
     .catch(console.error);
   }
 
-  function handleOpenPopup(popup) {
-    setPopup(popup);
-  }
-
-  function handleClosePopup() {
-    setPopup(null);
-  }
-
   useEffect(() => {
   api.getInitialCards()
     .then((cardsFromServer) => {
@@ -81,7 +72,7 @@ function Main() {
                     />
                     <button
                       className="content__button content__button_avatar_edit"
-                      onClick={() => handleOpenPopup(editAvatarPopup)}
+                      onClick={() => onOpenPopup(editAvatarPopup)}
                     ></button>
                   </div>
                   <div className="content__info">
@@ -90,7 +81,7 @@ function Main() {
                   </div>
                   <button 
                   className="content__button content__button_edit"
-                  onClick={() => handleOpenPopup(editProfilePopup)}
+                  onClick={() => onOpenPopup(editProfilePopup)}
                   >
                     <img
                       src={editButton}
@@ -100,7 +91,7 @@ function Main() {
                   </button>
                   <button 
                   className="content__button content__button_add"
-                  onClick={() => handleOpenPopup(newCardPopup)}
+                  onClick={() => onOpenPopup(newCardPopup)}
                   >
                     <img
                       src={addButton}
@@ -115,7 +106,7 @@ function Main() {
                 <Card
                 key={card._id}
                 card={card}
-                onCardClick={handleOpenPopup}
+                onCardClick={onOpenPopup}
                 onCardLike={handleCardLike}
                 onCardDelete={handleCardDelete}
                 />
@@ -123,7 +114,7 @@ function Main() {
               </section>
 
               {popup && (
-                <Popup onClose={handleClosePopup} title={popup.title}>
+                <Popup onClose={onClosePopup} title={popup.title}>
                   {popup.children}
                 </Popup>
           )}

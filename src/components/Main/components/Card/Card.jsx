@@ -3,7 +3,7 @@ import ImagePopup from "../../../ImagePopup/ImagePopup";
 import CurrentUserContext from "../../../../contexts/CurrentUserContext";
 
 function Card({card, onCardClick, onCardLike, onCardDelete }) {
-    const currentUser = useContext(CurrentUserContext);
+    const { currentUser } = useContext(CurrentUserContext);
     const { name, link, likes = [] } = card;
 
     function handleLikeClick() {
