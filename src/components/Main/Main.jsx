@@ -21,6 +21,36 @@ function Main() {
   const editProfilePopup = { title: "Editar perfil", children: <EditProfile /> };
   const editAvatarPopup = { title: "Cambiar foto de perfil", children: <EditAvatar /> };
 
+  function handleCardLike(card) {
+  const likes = card.likes || [];
+
+  const isLiked = likes.some(
+    (user) => user._id === currentUser._id
+  );
+
+  const likeRequest = isLiked
+    ? api.removeLike(card._id)
+    : api.addLike(card._id);
+
+  likeRequest
+    .then((newCard) => {
+      setCards((state) =>
+        state.map((c) => (c._id === card._id ? newCard : c))
+      );
+    })
+    .catch(console.error);
+  }
+
+  function handleCardDelete(card) {
+  api.deleteCard(card._id)
+    .then(() => {
+      setCards((state) =>
+        state.filter((c) => c._id !== card._id)
+      );
+    })
+    .catch(console.error);
+  }
+
   function handleOpenPopup(popup) {
     setPopup(popup);
   }
@@ -81,9 +111,15 @@ function Main() {
               </section>
 
               <section className="cards">
-              {cards.map(card => (
-                <Card key={card._id} card={card} onCardClick={handleOpenPopup} />
-              ))}
+                {cards.map((card) => (
+                <Card
+                key={card._id}
+                card={card}
+                onCardClick={handleOpenPopup}
+                onCardLike={handleCardLike}
+                onCardDelete={handleCardDelete}
+                />
+                ))}
               </section>
 
               {popup && (

@@ -2,10 +2,17 @@ import { useContext } from "react";
 import ImagePopup from "../../../ImagePopup/ImagePopup";
 import CurrentUserContext from "../../../../contexts/CurrentUserContext";
 
-
-function Card({card, onCardClick}) {
+function Card({card, onCardClick, onCardLike, onCardDelete }) {
     const currentUser = useContext(CurrentUserContext);
     const { name, link, likes = [] } = card;
+
+    function handleLikeClick() {
+    onCardLike(card);
+  }
+
+    function handleDeleteClick() {
+    onCardDelete(card);
+  }
 
     const isLiked = likes.some(
     (user) => user._id === currentUser?._id
@@ -26,6 +33,7 @@ function Card({card, onCardClick}) {
         className="card__button card__button_trash"
         aria-label="Delete card"
         type="button"
+        onClick={handleDeleteClick}
         />
         <img
         className="card__image"
@@ -41,6 +49,7 @@ function Card({card, onCardClick}) {
             className={cardLikeButtonClassName}
             aria-label="Like card"
             type="button"
+            onClick={handleLikeClick}
           />
           <span className="card__like_count">{likes.length}</span>
         </div>
