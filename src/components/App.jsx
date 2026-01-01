@@ -32,9 +32,19 @@ function App() {
     .catch(console.error);
   }
 
+  function handleUpdateAvatar(data) {
+  api.setUserAvatar(data)
+    .then((newUserData) => {
+      setCurrentUser(newUserData);
+      handleClosePopup();
+    })
+    .catch(console.error);
+  }
+
+
   return (
     <>
-    <CurrentUserContext.Provider value={{currentUser, handleUpdateUser}}>
+    <CurrentUserContext.Provider value={{currentUser, handleUpdateUser, handleUpdateAvatar}}>
     <div className="page">
       <Header />
       <Main 
