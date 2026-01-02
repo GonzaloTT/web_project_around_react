@@ -32,8 +32,8 @@ function App() {
     .catch(console.error);
   }
 
-  function handleUpdateAvatar(data) {
-  api.setUserAvatar(data)
+  function handleUpdateAvatar(avatarLink) {
+  api.updateAvatar(avatarLink)
     .then((newUserData) => {
       setCurrentUser(newUserData);
       handleClosePopup();

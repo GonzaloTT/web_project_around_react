@@ -8,9 +8,12 @@ function EditAvatar() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    handleUpdateAvatar({
-      avatar: avatarRef.current.value,
-    });
+    const avatarUrl = avatarRef.current.value;
+    console.log("Avatar enviado:", avatarRef.current.value);
+
+    handleUpdateAvatar(
+      avatarUrl
+    );
   }
 
     return (
