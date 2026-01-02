@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 
 import editButton from "../../../images/Edit_Button.svg";
 import addButton from "../../../images/Add_Button.svg";
@@ -8,58 +8,14 @@ import Popup from "../Main/components/Popup/Popup";
 import NewCard from "../NewCard/form/NewCard";
 import EditProfile from "../EditProfile/EditProfile";
 import EditAvatar from "../Avatar/EditAvatar"
-import api from "../../utils/api";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-function Main({popup, onOpenPopup, onClosePopup}) {
+function Main({popup, onOpenPopup, cards, onClosePopup, onCardLike, onCardDelete, onAddPlaceSubmit}) {
   const { currentUser } = useContext(CurrentUserContext);
 
-  const [cards, setCards] = useState([]);
-
-  const newCardPopup = { title: "Nuevo lugar", children: <NewCard /> };
+  const newCardPopup = { title: "Nuevo lugar", children: <NewCard onAddPlaceSubmit={onAddPlaceSubmit} /> };
   const editProfilePopup = { title: "Editar perfil", children: <EditProfile /> };
   const editAvatarPopup = { title: "Cambiar foto de perfil", children: <EditAvatar /> };
-
-  function handleCardLike(card) {
-  const likes = card.likes || [];
-
-  const isLiked = likes.some(
-    (user) => user._id === currentUser._id
-  );
-
-  const likeRequest = isLiked
-    ? api.removeLike(card._id)
-    : api.addLike(card._id);
-
-  likeRequest
-    .then((newCard) => {
-      setCards((state) =>
-        state.map((c) => (c._id === card._id ? newCard : c))
-      );
-    })
-    .catch(console.error);
-  }
-
-  function handleCardDelete(card) {
-  api.deleteCard(card._id)
-    .then(() => {
-      setCards((state) =>
-        state.filter((c) => c._id !== card._id)
-      );
-    })
-    .catch(console.error);
-  }
-
-  useEffect(() => {
-  api.getInitialCards()
-    .then((cardsFromServer) => {
-      setCards(cardsFromServer);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-  }, []);
-
 
     return (
         <main className="content">
@@ -107,8 +63,8 @@ function Main({popup, onOpenPopup, onClosePopup}) {
                 key={card._id}
                 card={card}
                 onCardClick={onOpenPopup}
-                onCardLike={handleCardLike}
-                onCardDelete={handleCardDelete}
+                onCardLike={onCardLike}
+                onCardDelete={onCardDelete}
                 />
                 ))}
               </section>

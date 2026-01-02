@@ -1,7 +1,21 @@
-function NewCard() {
+import { useRef } from "react";
+
+function NewCard({ onAddPlaceSubmit }) {
+  const titleRef = useRef();
+  const urlRef = useRef();
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    onAddPlaceSubmit({
+      name: titleRef.current.value,
+      link: urlRef.current.value,
+    });
+  }
+
     return (
         <>
-        <form className="popup__content" name="add-card" noValidate>
+        <form className="popup__content" name="add-card" noValidate onSubmit={handleSubmit}>
               <fieldset className="popup__form">
                 <input
                   type="text"
@@ -12,6 +26,7 @@ function NewCard() {
                   minLength="2"
                   maxLength="30"
                   required
+                  ref={titleRef}
                 />
                 <span
                   className="popup__input popup__input_error"
@@ -25,6 +40,7 @@ function NewCard() {
                   id="url_input"
                   name="url_input"
                   required
+                  ref={urlRef}
                 />
                 <span
                   className="popup__input popup__input_error"
