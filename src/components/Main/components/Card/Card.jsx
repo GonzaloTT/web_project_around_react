@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import ImagePopup from "../../../ImagePopup/ImagePopup";
 import CurrentUserContext from "../../../../contexts/CurrentUserContext";
+import RemoveCard from "../../../../components/RemoveCard/RevomeCard";
 
 function Card({card, onCardClick, onCardLike, onCardDelete }) {
     const { currentUser } = useContext(CurrentUserContext);
@@ -8,10 +9,6 @@ function Card({card, onCardClick, onCardLike, onCardDelete }) {
 
     function handleLikeClick() {
     onCardLike(card);
-  }
-
-    function handleDeleteClick() {
-    onCardDelete(card);
   }
 
     const isLiked = likes.some(
@@ -29,12 +26,7 @@ function Card({card, onCardClick, onCardLike, onCardDelete }) {
 
     return(
         <li className="card">
-        <button
-        className="card__button card__button_trash"
-        aria-label="Delete card"
-        type="button"
-        onClick={handleDeleteClick}
-        />
+        <RemoveCard card={card} onCardDelete={onCardDelete} />
         <img
         className="card__image"
         src={link}
