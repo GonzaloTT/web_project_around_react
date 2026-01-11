@@ -1,4 +1,37 @@
+import { useState, useContext, useEffect } from "react";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
+
 function EditProfile() {
+  const { currentUser, handleUpdateUser } = useContext(CurrentUserContext);
+
+  const [name, setName] = useState(currentUser?.name || "");
+  const [description, setDescription] = useState(currentUser?.about || "");
+
+  function handleNameChange(e) {
+    setName(e.target.value);
+  }
+
+  function handleDescriptionChange(e) {
+    setDescription(e.target.value);
+  }
+
+  function handleSubmit(e) {
+  e.preventDefault();
+
+  handleUpdateUser({
+    name,
+    about: description,
+  });
+  }
+
+  useEffect(() => {
+  if (currentUser) {
+    setName(currentUser.name);
+    setDescription(currentUser.about);
+  }
+  }, [currentUser]);
+
+
     return(
         <>
             <form
@@ -6,6 +39,7 @@ function EditProfile() {
               id="form"
               name="edit-profile"
               noValidate
+              onSubmit={handleSubmit}
             >
 
               <fieldset className="popup__form">
@@ -18,6 +52,8 @@ function EditProfile() {
                   minLength="2"
                   maxLength="40"
                   required
+                  value={name}
+                  onChange={handleNameChange}
                 />
 
                 <span
@@ -34,6 +70,8 @@ function EditProfile() {
                   minLength="2"
                   maxLength="200"
                   required
+                  value={description}
+                  onChange={handleDescriptionChange}
                 />
                 <span
                   className="popup__input popup__input_error"

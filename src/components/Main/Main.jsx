@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 
 import editButton from "../../../images/Edit_Button.svg";
 import addButton from "../../../images/Add_Button.svg";
@@ -8,37 +8,14 @@ import Popup from "../Main/components/Popup/Popup";
 import NewCard from "../NewCard/form/NewCard";
 import EditProfile from "../EditProfile/EditProfile";
 import EditAvatar from "../Avatar/EditAvatar"
-import api from "../../utils/api";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-function Main() {
-  const currentUser = useContext(CurrentUserContext);
+function Main({popup, onOpenPopup, cards, onClosePopup, onCardLike, onCardDelete, onAddPlaceSubmit}) {
+  const { currentUser } = useContext(CurrentUserContext);
 
-  const [popup, setPopup] = useState(null);
-  const [cards, setCards] = useState([]);
-
-  const newCardPopup = { title: "Nuevo lugar", children: <NewCard /> };
+  const newCardPopup = { title: "Nuevo lugar", children: <NewCard onAddPlaceSubmit={onAddPlaceSubmit} /> };
   const editProfilePopup = { title: "Editar perfil", children: <EditProfile /> };
   const editAvatarPopup = { title: "Cambiar foto de perfil", children: <EditAvatar /> };
-
-  function handleOpenPopup(popup) {
-    setPopup(popup);
-  }
-
-  function handleClosePopup() {
-    setPopup(null);
-  }
-
-  useEffect(() => {
-  api.getInitialCards()
-    .then((cardsFromServer) => {
-      setCards(cardsFromServer);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-  }, []);
-
 
     return (
         <main className="content">
@@ -51,7 +28,7 @@ function Main() {
                     />
                     <button
                       className="content__button content__button_avatar_edit"
-                      onClick={() => handleOpenPopup(editAvatarPopup)}
+                      onClick={() => onOpenPopup(editAvatarPopup)}
                     ></button>
                   </div>
                   <div className="content__info">
@@ -60,7 +37,7 @@ function Main() {
                   </div>
                   <button 
                   className="content__button content__button_edit"
-                  onClick={() => handleOpenPopup(editProfilePopup)}
+                  onClick={() => onOpenPopup(editProfilePopup)}
                   >
                     <img
                       src={editButton}
@@ -70,7 +47,7 @@ function Main() {
                   </button>
                   <button 
                   className="content__button content__button_add"
-                  onClick={() => handleOpenPopup(newCardPopup)}
+                  onClick={() => onOpenPopup(newCardPopup)}
                   >
                     <img
                       src={addButton}
@@ -81,13 +58,19 @@ function Main() {
               </section>
 
               <section className="cards">
-              {cards.map(card => (
-                <Card key={card._id} card={card} onCardClick={handleOpenPopup} />
-              ))}
+                {cards.map((card) => (
+                <Card
+                key={card._id}
+                card={card}
+                onCardClick={onOpenPopup}
+                onCardLike={onCardLike}
+                onCardDelete={onCardDelete}
+                />
+                ))}
               </section>
 
               {popup && (
-                <Popup onClose={handleClosePopup} title={popup.title}>
+                <Popup onClose={onClosePopup} title={popup.title}>
                   {popup.children}
                 </Popup>
           )}

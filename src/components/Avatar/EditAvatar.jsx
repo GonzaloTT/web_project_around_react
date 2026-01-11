@@ -1,7 +1,24 @@
+import { useRef, useContext } from "react";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
+
 function EditAvatar() {
+  const avatarRef = useRef();
+  const { handleUpdateAvatar } = useContext(CurrentUserContext);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const avatarUrl = avatarRef.current.value;
+    console.log("Avatar enviado:", avatarRef.current.value);
+
+    handleUpdateAvatar(
+      avatarUrl
+    );
+  }
+
     return (
         <>
-        <form className="popup__content" name="edit-avatar" noValidate>
+        <form className="popup__content" name="edit-avatar" noValidate onSubmit={handleSubmit}>
               <fieldset className="popup__form">
                 <input
                   type="url"
@@ -10,6 +27,7 @@ function EditAvatar() {
                   id="avatar_input"
                   name="avatar_input"
                   required
+                  ref={avatarRef}
                 />
                 <span
                   className="popup__input popup__input_error"
