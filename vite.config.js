@@ -8,4 +8,7 @@ export default defineConfig({
     port: 3000,
   },
   base: "/web_project_around_react/",
+  build: {
+    outDir: "docs",
+  },
 })
